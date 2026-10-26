@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src 'self' blob:; manifest-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Scoreboard — Free Online Score Keeper for Any Game | S3eidat Tools</title>
+<meta name="description" content="Keep score for any game: players or teams with colours, big plus and minus buttons, custom steps, rounds with undo, a game timer and the leader highlighted. Big enough for a TV. Free and private.">
+<meta property="og:title" content="Scoreboard — keep score for any game">
+<meta property="og:description" content="A big, simple score keeper with rounds, undo and a timer. Runs 100% in your browser.">
+<meta property="og:image" content="screenshot.png">
+<link rel="icon" href="kit/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="kit/kit.css">
+<link rel="stylesheet" href="app.css">
+<script src="kit/kit.js"></script>
+</head>
+<body data-tool="scoreboard">
+<main class="s3-main">
+  <section class="s3-hero">
+    <h1>Scoreboard</h1>
+    <p>Keep score for cards, board games, quizzes or sports. Big buttons for a phone, fullscreen for a TV, and every point can be undone.</p>
+  </section>
+
+  <section class="board-wrap" id="boardWrap">
+    <div class="bar">
+      <div class="row">
+        <span class="chip accent" id="roundChip">Round 1</span>
+        <span class="timer mono" id="timer" role="timer">00:00</span>
+        <button class="btn small" id="timerGo">Start timer</button>
+        <button class="btn ghost small" id="timerReset" aria-label="Reset timer">Reset</button>
+      </div>
+      <div class="row">
+        <button class="btn small" id="newRound"><svg class="i"><use href="#i-plus"/></svg>Next round</button>
+        <button class="btn small" id="undo" title="Undo (Ctrl+Z)">↶ Undo</button>
+        <button class="btn small" id="fs">⛶ TV mode</button>
+      </div>
+    </div>
+    <div class="board" id="board"></div>
+    <div class="empty" id="noPlayers" hidden><b>No players</b>Add a player or team below.</div>
+  </section>
+
+  <div class="grid-2 mt sb-grid">
+    <section class="card">
+      <h2>Players &amp; settings</h2>
+      <form class="row" id="addForm">
+        <label class="grow"><span class="sr">Player or team name</span><input class="input" id="pName" maxlength="40" dir="auto" placeholder="Add a player or team" autocomplete="off"></label>
+        <label><span class="sr">Colour</span><input type="color" id="pColor" value="#3dd6d0"></label>
+        <button class="btn primary" type="submit"><svg class="i"><use href="#i-plus"/></svg>Add</button>
+      </form>
+      <div class="field mt"><span>Points per tap</span>
+        <div class="row">
+          <div class="seg" id="step" role="group" aria-label="Points per tap">
+            <button aria-pressed="true" data-v="1">1</button><button aria-pressed="false" data-v="2">2</button><button aria-pressed="false" data-v="5">5</button>
+            <button aria-pressed="false" data-v="10">10</button><button aria-pressed="false" data-v="25">25</button><button aria-pressed="false" data-v="100">100</button>
+          </div>
+          <label><span class="sr">Custom points per tap</span><input class="input custom-step" type="number" id="customStep" min="1" max="100000" placeholder="Custom"></label>
+        </div>
+      </div>
+      <div class="row mt">
+        <label class="field">Play to (optional)<input class="input target" type="number" id="target" min="1" max="1000000" placeholder="e.g. 100"></label>
+        <label class="check"><input type="checkbox" id="lowWins"> Lowest score wins</label>
+      </div>
+      <div class="row mt">
+        <button class="btn" id="resetScores"><svg class="i"><use href="#i-refresh"/></svg>New game (keep players)</button>
+        <button class="btn ghost danger" id="clearAll">Remove everyone</button>
+      </div>
+      <p class="faint mt">Keys: <kbd>1</kbd>–<kbd>9</kbd> add points to player 1–9, <kbd>Shift</kbd>+number subtracts, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo, <kbd>N</kbd> next round.</p>
+    </section>
+
+    <section class="card">
+      <div class="row between"><h2>Rounds</h2><button class="btn small" id="copy"><svg class="i"><use href="#i-copy"/></svg>Copy</button></div>
+      <div class="tbl-wrap mt" id="roundsWrap"><table class="tbl rounds" id="rounds"></table></div>
+      <h3 class="sub">Recent changes</h3>
+      <ol class="log" id="log"></ol>
+      <p class="faint" id="noLog">Every point you add shows up here.</p>
+    </section>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
